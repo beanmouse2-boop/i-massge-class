@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TPO 코디 스튜디오</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#30334b;--muted:#687087;--purple:#7160bd;--pink:#f6dce6;--mint:#dff2eb;--line:#e5e3ef}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(135deg,#fbf0f5,#edf5fb 55%,#edf8f0);color:var(--ink);font-family:"Noto Sans KR",sans-serif;line-height:1.65}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;min-height:46px;border:1px solid var(--line);border-radius:14px;padding:10px 16px;background:white;color:var(--ink)}
+button:hover{border-color:var(--purple);background:#f6f2ff}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #8062cd;outline-offset:3px}
+button[aria-pressed="true"]{border-color:var(--purple);background:#eee8ff;box-shadow:inset 0 0 0 1px var(--purple)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.primary{background:var(--purple);color:white;border-color:var(--purple);font-weight:700}
+.primary:hover{background:#6050a6;color:white}
+header,main,footer{max-width:1180px;margin:auto;padding:22px}
+header{display:flex;justify-content:space-between;align-items:center;gap:15px}
+.brand{font-weight:800;font-size:20px}
+.tag{font-size:12px;background:white;border-radius:30px;padding:8px 13px}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+.step{font-size:12px;border-radius:20px;padding:7px 12px;background:#ffffffa8}
+.step.current{background:var(--purple);color:white}
+h1{font-size:clamp(30px,5vw,52px);line-height:1.25;letter-spacing:-1.5px}
+h2{font-size:27px;margin:0 0 12px}
+h3{margin:20px 0 10px;font-size:17px}
+p{margin:10px 0}
+.panel{background:#ffffffeb;border:1px solid white;border-radius:26px;padding:28px;box-shadow:0 12px 40px #4540600a}
+.grid{display:grid;grid-template-columns:minmax(260px,.8fr) minmax(340px,1.2fr);gap:24px;align-items:start}
+.preview{position:sticky;top:18px;text-align:center;background:linear-gradient(155deg,#f4edf8,#e4f1ee)}
+.avatar{width:100%;max-width:360px;display:block;margin:auto}
+.actions{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:26px}
+.row{display:flex;gap:9px;flex-wrap:wrap}
+.hint{background:#f1edf9;border-radius:16px;padding:15px 18px;font-size:14px}
+.muted{color:var(--muted);font-size:14px}
+.eyebrow{font-size:13px;font-weight:700;color:var(--purple);letter-spacing:2px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
+.mission{text-align:left;padding:22px;min-height:155px}
+.mission span{display:block;font-size:28px;margin-bottom:8px}
+.mission strong{display:block}
+fieldset{border:0;padding:0;margin:20px 0}
+legend{font-weight:700;margin-bottom:9px}
+.swatch{width:44px;height:44px;min-height:44px;padding:0;border:3px solid white;box-shadow:0 0 0 1px #d8d8e3;border-radius:50%}
+.swatch[aria-pressed="true"]{box-shadow:0 0 0 3px var(--purple)}
+.bubble{margin-top:16px;background:white;border-radius:18px;padding:18px;text-align:left;border:1px solid #ded6ef}
+.bubble strong{color:var(--purple)}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:15px}
+.tabs button{padding:8px 12px}
+label{display:block;font-weight:600;margin:12px 0 7px}
+textarea,input[type="text"]{width:100%;padding:14px;border:1px solid #cbc9dc;border-radius:14px;background:white;color:var(--ink)}
+textarea{min-height:170px;resize:vertical}
+.stars{font-size:36px;color:#a87719;letter-spacing:4px}
+.rule{padding:15px 0;border-bottom:1px solid var(--line)}
+.check{padding:10px 14px;border-radius:12px;background:#f2f2f8;margin:8px 0}
+.check.ok{background:#e7f5ee;color:#245840}
+.card{max-width:760px;margin:auto;background:white;border:1px solid #e3ddec;border-radius:25px;padding:28px}
+.cardGrid{display:grid;grid-template-columns:230px 1fr;gap:24px;align-items:center}
+.quote{white-space:pre-wrap;overflow-wrap:anywhere;background:#f6f2f8;padding:18px;border-radius:16px}
+.notice{padding:12px 16px;background:#fff5df;border-radius:14px}
+.hero{padding:40px}
+.heroVisual{border-radius:26px;background:#efe7f5;position:relative}
+.pill{display:inline-block;padding:6px 12px;background:#e4f3ec;border-radius:20px;font-size:13px}
+footer{text-align:center;color:var(--muted);font-size:12px}
+#status{min-height:24px;color:var(--purple);margin-top:10px}
+@media(max-width:760px){header,main,footer{padding:16px}.grid{grid-template-columns:1fr}.preview{position:static;padding:18px}.preview .avatar{max-width:230px}.panel{padding:22px}.cards{grid-template-columns:repeat(2,1fr)}.cardGrid{grid-template-columns:1fr}.cardGrid .avatar{max-width:220px}.hero{padding:26px}h1{letter-spacing:-1px}.tag{display:none}}
+@media(prefers-reduced-motion:no-preference){button{transition:background .15s,border-color .15s}}
+</style>
+</head>
+<body>
+<header>
+<div class="brand">✦ TPO 코디 스튜디오</div>
+<div class="tag">중학교 가정 · 9기가01-04</div>
+</header>
+<main id="app"></main>
+<footer>모든 옷은 누구나 선택할 수 있어요. 외모의 우열을 판단하지 않고 디자인의 효과와 TPO를 탐구해요.</footer>
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const colors=[
+["빨강","#d95163","warm"],["주황","#ec9254","warm"],["노랑","#edcc5e","warm"],
+["연두","#a9c86b","cool"],["초록","#43876f","cool"],["하늘","#80c6dd","cool"],
+["파랑","#507cca","cool"],["보라","#9771bd","cool"],["분홍","#e7a1bb","warm"],
+["갈색","#92644d","warm"],["흰색","#ffffff","neutral"],["회색","#646976","neutral"],
+["검정","#272935","neutral"],["남색","#293b61","cool"]
+];
+const skins=["#f7dfca","#edc5a5","#d9a47d","#bc815e","#956044","#68432f"];
+const faces=["둥근형","갸름한형","각진형","긴형"];
+const hairs=["짧은 머리","단발머리","긴 머리","묶은 머리"];
+const bodies=["체형 1","체형 2","체형 3"];
+const patterns=["무지","세로 줄무늬","가로 줄무늬","사선 줄무늬","체크","물방울"];
+const materials=["면","마","울 니트","데님","실크","기능성 소재","가죽"];
+const kinds={
+top:["티셔츠","셔츠","니트","후드티","원피스"],
+bottom:["긴바지","반바지","치마"],
+outer:["없음","재킷","가디건"],
+shoes:["운동화","구두","샌들","슬리퍼"]
+};
+const partNames={top:"상의 / 원피스",bottom:"하의",outer:"겉옷",shoes:"신발"};
+const missions=[
+{name:"결혼식 하객(낮)",icon:"💐",time:"낮",place:"결혼식장",occasion:"두 사람의 새로운 시작을 축하하는 자리",tip:"주인공과 다른 하객을 배려하는 옷차림을 생각해요."},
+{name:"조문(장례식)",icon:"🕯️",time:"조문하는 시간",place:"장례식장",occasion:"고인을 추모하고 유가족을 위로하는 자리",tip:"슬픔을 나누는 분들이 편안하게 느낄 차분한 표현을 생각해요."},
+{name:"산으로 가는 체험학습",icon:"🌿",time:"낮 · 야외 활동",place:"산과 탐방로",occasion:"친구들과 걷고 자연을 관찰하는 활동",tip:"안전과 움직임, 날씨에 대응할 수 있는 소재를 생각해요."},
+{name:"학생회 선거 발표",icon:"🎤",time:"학교 발표 시간",place:"교실 또는 강당",occasion:"친구들에게 공약을 전달하는 자리",tip:"발표 내용에 집중할 수 있는 옷차림을 생각해요."},
+{name:"친구 생일 파티",icon:"🎂",time:"친구들과 약속한 시간",place:"생일 파티 장소",occasion:"친구의 생일을 함께 축하하는 자리",tip:"자유롭게 개성을 표현하고 디자인 선택의 이유를 설명해요."},
+{name:"여름 바닷가 가족여행",icon:"🏖️",time:"더운 여름 낮",place:"바닷가",occasion:"가족과 쉬고 해변을 산책하는 여행",tip:"더위와 통기성, 해변에서의 움직임을 생각해요."}
+];
+const steps=["시작","아바타","미션","코디","TPO 점검","나의 설명","코디 카드"];
+function initial(){
+return {step:0,avatar:{face:0,skin:2,hair:0,body:1},mission:null,part:"top",neck:"라운드넥",
+clothes:{
+top:{kind:"티셔츠",color:6,pattern:0,size:"작은",material:"면"},
+bottom:{kind:"긴바지",color:13,pattern:0,size:"작은",material:"데님"},
+outer:{kind:"없음",color:11,pattern:0,size:"작은",material:"면"},
+shoes:{kind:"운동화",color:10,pattern:0,size:"작은",material:"기능성 소재"}
+},effect:"옷과 디자인 요소를 선택하면 효과를 살펴볼 수 있어요.",explanation:"",name:""};
+}
+let state=initial();
+function isDress(){return state.clothes.top.kind==="원피스"}
+function colorOf(g){return colors[g.color][1]}
+function options(list,current,fn){
+return '<div class="row">'+list.map((x,i)=>`<button type="button" aria-pressed="${current===i||current===x}" onclick="${fn(i,x)}">${esc(x)}</button>`).join("")+"</div>";
+}
+function palette(current,fn,list=colors){
+return '<div class="row">'+list.map((x,i)=>{
+const name=Array.isArray(x)?x[0]:`피부톤 ${i+1}`;
+const color=Array.isArray(x)?x[1]:x;
+return `<button class="swatch" style="background:${color}" aria-label="${name}" title="${name}" aria-pressed="${current===i}" onclick="${fn(i)}"></button>`;
+}).join("")+"</div>";
+}
+function field(title,content){return `<fieldset><legend>${title}</legend>${content}</fieldset>`}
+function nav(){return '<nav aria-label="활동 단계">'+steps.map((s,i)=>`<span class="step ${state.step===i?"current":""}" ${state.step===i?'aria-current="step"':""}>${i+1}. ${s}</span>`).join("")+"</nav>"}
+function go(n){state.step=n;render();window.scrollTo({top:0,behavior:"instant"});const h=document.querySelector("h1,h2");if(h){h.tabIndex=-1;h.focus({preventScroll:true})}}
+function actions(back,next,label="다음으로"){return `<div class="actions"><button onclick="go(${back})">← 이전</button><button class="primary" onclick="go(${next})">${label} →</button></div>`}
+
+function patternDef(g,id){
+const bg=colorOf(g),pitch=g.size==="큰"?25:12;
+const ink=(g.color===12||g.color===13||g.color===11)?"#ffffff":"#25334b";
+let shape="";
+if(g.pattern===1)shape=`<path d="M${pitch/2} 0V${pitch}" stroke="${ink}" stroke-width="${g.size==="큰"?4:2}"/>`;
+if(g.pattern===2)shape=`<path d="M0 ${pitch/2}H${pitch}" stroke="${ink}" stroke-width="${g.size==="큰"?4:2}"/>`;
+if(g.pattern===3)shape=`<path d="M-${pitch/2} ${pitch/2}L${pitch/2} -${pitch/2} M0 ${pitch}L${pitch} 0 M${pitch/2} ${pitch*1.5}L${pitch*1.5} ${pitch/2}" stroke="${ink}" stroke-width="2"/>`;
+if(g.pattern===4)shape=`<path d="M${pitch/2} 0V${pitch} M0 ${pitch/2}H${pitch}" stroke="${ink}" stroke-width="${g.size==="큰"?5:2}"/>`;
+if(g.pattern===5)shape=`<circle cx="${pitch/2}" cy="${pitch/2}" r="${g.size==="큰"?5:2}" fill="${ink}"/>`;
+let texture="";
+if(g.material==="마")texture='<path d="M0 3H30 M3 0V30" stroke="#665a47" stroke-width=".6" opacity=".18"/>';
+if(g.material==="울 니트")texture='<path d="M2 0L6 5 10 0M2 8L6 13 10 8M14 0L18 5 22 0M14 8L18 13 22 8" fill="none" stroke="#fff" opacity=".3"/>';
+if(g.material==="데님")texture='<path d="M0 10L10 0M0 20L20 0M0 30L30 0" stroke="#fff" stroke-width=".7" opacity=".22"/>';
+return `<pattern id="${id}" width="${pitch}" height="${pitch}" patternUnits="userSpaceOnUse"><rect width="${pitch}" height="${pitch}" fill="${bg}"/><g opacity=".38">${shape}</g>${texture}</pattern>`;
+}
+function svgAvatar(prefix="a"){
+const a=state.avatar,c=state.clothes,skin=skins[a.skin],sx=[.88,1,1.15][a.body];
+const fill=p=>`url(#${prefix}-${p})`;
+const outline='stroke="#3c3447" stroke-width="1.6" stroke-linejoin="round"';
+function cloth(path,p,extra=""){return `<path d="${path}" fill="${fill(p)}" ${outline} ${extra}/>`}
+const facePaths=[
+"M111 63Q150 39 189 63L187 104Q182 137 150 141Q118 137 113 104Z",
+"M117 60Q150 42 183 60L182 102Q177 124 150 143Q123 124 118 102Z",
+"M113 61Q150 44 187 61L186 113 173 135H127L114 113Z",
+"M120 52Q150 35 180 52L183 105Q181 143 150 149Q119 143 117 105Z"
+];
+let backHair="";
+if(a.hair===1)backHair='<path d="M105 87Q103 40 150 39Q198 39 195 88L200 153H100Z" fill="#493b40"/>';
+if(a.hair===2)backHair='<path d="M107 85Q101 38 150 37Q199 37 193 85L207 240Q184 253 168 230L126 230Q106 253 94 238Z" fill="#493b40"/>';
+if(a.hair===3)backHair='<ellipse cx="191" cy="63" rx="22" ry="29" fill="#493b40"/><path d="M195 79Q223 125 199 184Q188 153 181 116Z" fill="#493b40"/>';
+let lower=isDress()?"":c.bottom.kind==="긴바지"
+?cloth("M115 279H185L190 425H157L150 326 143 425H110Z","bottom")
+:c.bottom.kind==="반바지"
+?cloth("M115 279H185L190 349H157L150 318 143 349H110Z","bottom")
+:cloth("M115 279H185L209 377Q150 394 91 377Z","bottom");
+let top="";
+if(isDress()){
+top=cloth("M120 162L101 169 80 218 104 230 116 203 112 267 87 389Q150 407 213 389L188 267 184 203 196 230 220 218 199 169 180 162Z","top");
+}else{
+const k=c.top.kind;
+const longSleeve=k!=="티셔츠";
+const path=longSleeve
+?"M120 162L101 171 75 278 101 285 116 208 112 294Q150 301 188 294L184 208 199 285 225 278 199 171 180 162Z"
+:"M120 162L101 171 80 218 104 230 116 205 112 294Q150 301 188 294L184 205 196 230 220 218 199 171 180 162Z";
+top=cloth(path,"top");
+if(k==="후드티")top+=`<path d="M128 162Q111 139 150 142Q189 139 172 162L163 188H137Z" fill="${fill("top")}" ${outline}/><path d="M131 246H169L177 275H123Z" fill="none" ${outline}/><path d="M141 178V211M159 178V211" stroke="#f3ede5" stroke-width="2"/>`;
+if(k==="셔츠")top+='<path d="M150 187V292" stroke="#3c3447" opacity=".5"/><g fill="#f9f5eb"><circle cx="153" cy="213" r="2"/><circle cx="153" cy="239" r="2"/><circle cx="153" cy="265" r="2"/></g>';
+}
+let neck=state.neck==="V넥"
+?`<path d="M130 161L150 194 170 161Z" fill="${skin}" ${outline}/>`
+:state.neck==="셔츠 칼라"
+?`<path d="M130 160L150 178 170 160" fill="${skin}" ${outline}/><path d="M130 158L150 177 139 191 121 168ZM170 158L150 177 161 191 179 168Z" fill="${fill("top")}" ${outline}/>`
+:`<path d="M130 161Q150 191 170 161" fill="${skin}" ${outline}/>`;
+let outer="";
+if(c.outer.kind!=="없음"){
+outer=cloth("M120 159L98 169 70 291 100 297 116 209 108 307 140 310 140 190ZM180 159L202 169 230 291 200 297 184 209 192 307 160 310 160 190Z","outer");
+outer+=c.outer.kind==="재킷"
+?`<path d="M120 161L140 190 130 211 142 228M180 161L160 190 170 211 158 228" fill="none" ${outline}/><path d="M116 266H135M165 266H184" stroke="#3c3447"/>`
+:'<path d="M140 192V309M160 192V309" stroke="#ffffff" stroke-width="3" opacity=".5"/>';
+}
+let shoe="";
+if(c.shoes.kind==="운동화"||c.shoes.kind==="구두"){
+shoe=cloth("M109 421H142L145 443H96Q91 431 109 421ZM158 421H191Q209 431 204 443H155Z","shoes");
+shoe+='<path d="M96 441H145M155 441H204" stroke="#eee" stroke-width="5"/>';
+if(c.shoes.kind==="운동화")shoe+='<path d="M113 427H132M110 432H134M168 427H187M166 432H190" stroke="#fff" stroke-width="2"/>';
+}else{
+shoe=`<path d="M111 421H141L145 439H98ZM159 421H189L202 439H155Z" fill="${skin}" ${outline}/>`;
+shoe+=cloth("M98 438H145V445H96ZM155 438H203L205 445H155Z","shoes");
+shoe+=`<path d="M105 428L139 437M195 428L161 437" stroke="${colorOf(c.shoes)}" stroke-width="9"/>`;
+if(c.shoes.kind==="샌들")shoe+=`<path d="M113 420L115 438M187 420L185 438" stroke="${colorOf(c.shoes)}" stroke-width="7"/>`;
+}
+const shiny=Object.keys(c).filter(p=>(p!=="bottom"||!isDress())&&c[p].kind!=="없음"&&["실크","가죽"].includes(c[p].material));
+let shine="";
+shiny.forEach(p=>{
+const d={top:"M122 213L126 268",bottom:"M123 310L125 336",outer:"M104 204L89 273",shoes:"M113 435H133"}[p];
+shine+=`<path d="${d}" stroke="white" stroke-width="5" stroke-linecap="round" opacity=".35"/>`;
+});
+return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 480" class="avatar" role="img" aria-label="직접 선택한 아바타와 코디">
+<defs>${Object.keys(c).map(p=>patternDef(c[p],prefix+"-"+p)).join("")}</defs>
+<ellipse cx="150" cy="456" rx="86" ry="12" fill="#c9c1d4" opacity=".35"/>
+${backHair}
+<g transform="translate(${150*(1-sx)} 0) scale(${sx} 1)">
+<path d="M119 276H181L189 430H159L150 333 141 430H111Z" fill="${skin}" ${outline}/>
+<path d="M119 166L101 177 77 285Q73 302 88 305Q100 303 102 288L119 223ZM181 166L199 177 223 285Q227 302 212 305Q200 303 198 288L181 223Z" fill="${skin}" ${outline}/>
+<path d="M136 128H164V165L179 171Q151 195 121 171L136 165Z" fill="${skin}" ${outline}/>
+${lower}${top}${neck}${outer}${shoe}${shine}
+</g>
+<path d="${facePaths[a.face]}" fill="${skin}" ${outline}/>
+<path d="M109 85Q100 38 148 38Q195 38 192 84L179 70Q157 81 136 60Q126 79 109 85Z" fill="#493b40"/>
+${a.hair===0?'<path d="M112 80L115 100M186 79L184 98" stroke="#493b40" stroke-width="9" stroke-linecap="round"/>':""}
+<g fill="#44363d"><circle cx="133" cy="99" r="3"/><circle cx="167" cy="99" r="3"/></g>
+<path d="M143 120Q150 125 157 120" fill="none" stroke="#80574e" stroke-width="2" stroke-linecap="round"/>
+</svg>`;
+}
+function preview(extra=""){
+return `<aside class="panel preview"><span class="pill">MY LOOK · 나의 선택</span><div id="avatarView">${svgAvatar()}</div>${extra}</aside>`;
+}
+function missionInfo(){
+const m=missions[state.mission];
+return `<div class="hint"><strong>${m.icon} ${m.name}</strong><br>Time · ${m.time}<br>Place · ${m.place}<br>Occasion · ${m.occasion}</div>`;
+}
+function render(){
+let html=nav();
+if(state.step===0){
+html+=`<section class="panel hero grid"><div><div class="eyebrow">DESIGN YOUR OWN DAY</div><h1>오늘의 상황에<br>나의 생각을 입히다.</h1><p>선·색·무늬·재질로 완성하는<br><strong>TPO 코디 스튜디오</strong></p><div class="hint"><div>① 나다운 아바타를 만들고 TPO 미션을 골라요.</div><div>② 디자인 요소의 효과를 살펴보며 옷을 입혀요.</div><div>③ 상황을 배려한 선택을 설명하고 코디 카드를 저장해요.</div></div><div class="actions"><button class="primary" onclick="go(1)">시작하기 →</button></div><p class="muted">사진이나 카메라 없이, 직접 고르는 활동이에요.</p></div><div class="heroVisual">${svgAvatar("hero")}</div></section>`;
+}
+if(state.step===1){
+html+=`<h2>나만의 아바타 만들기</h2><p>모든 선택에는 정답이 없어요. 나다운 모습으로 만들어 보세요.</p><div class="grid">${preview()}<section class="panel">
+${field("얼굴형",options(faces,state.avatar.face,i=>`setAvatar('face',${i})`))}
+${field("피부톤",palette(state.avatar.skin,i=>`setAvatar('skin',${i})`,skins))}
+${field("머리 모양",options(hairs,state.avatar.hair,i=>`setAvatar('hair',${i})`))}
+${field("체형",options(bodies,state.avatar.body,i=>`setAvatar('body',${i})`))}
+<p class="muted">어떤 아바타든 모든 옷을 자유롭게 입을 수 있어요.</p>${actions(0,2,"미션 고르기")}</section></div>`;
+}
+if(state.step===2){
+html+=`<section class="panel"><h2>오늘의 TPO 미션은?</h2><p>카드를 직접 고르거나, 무작위로 뽑아 보세요.</p><button class="primary" onclick="drawMission()">🎲 미션 무작위 뽑기</button>
+<div class="cards">${missions.map((m,i)=>`<button class="mission" aria-pressed="${state.mission===i}" onclick="chooseMission(${i})"><span>${m.icon}</span><strong>${m.name}</strong><small>${m.tip}</small></button>`).join("")}</div>
+<div id="missionChosen" aria-live="polite">${state.mission!==null?'<h3>선택한 미션</h3>'+missionInfo():"<p>미션을 한 장 선택해 주세요.</p>"}</div>
+<div class="actions"><button onclick="go(1)">← 이전</button><button class="primary" ${state.mission===null?"disabled":""} onclick="go(3)">코디 시작 →</button></div></section>`;
+}
+if(state.step===3){
+if(state.mission===null){state.step=2;render();return}
+html+=`<h2>디자인 요소로 코디하기</h2><p class="muted">아이템을 고르고, 각 아이템의 색·무늬·재질을 바꿔 보세요.</p><div class="grid">
+${preview(`<div class="bubble" role="status" aria-live="polite"><strong>✦ 디자인 요소 효과</strong><div id="effect">${esc(state.effect)}</div></div><p class="muted">시각적 효과는 일반적인 경향이며 크기·배치·조합에 따라 달라져요.</p>`)}
+<section class="panel">${missionInfo()}<h3>꾸밀 아이템</h3>
+<div class="tabs" role="group" aria-label="꾸밀 아이템">${Object.keys(partNames).map(p=>`<button aria-pressed="${state.part===p}" onclick="selectPart('${p}')">${partNames[p]}</button>`).join("")}</div>
+${controls()}${actions(2,4,"점검하기")}</section></div>`;
+}
+if(state.step===4){
+const result=evaluate();
+html+=`<h2>TPO를 함께 점검해요</h2><div class="grid">${preview()}<section class="panel">${missionInfo()}<h3>TPO 적합도</h3>
+<div class="stars" aria-label="5개 중 ${result.stars}개">${"★".repeat(result.stars)}${"☆".repeat(5-result.stars)}</div>
+<p>${result.stars===5?"상황과 활동 목적을 고려한 코디예요. 선택의 이유도 들려주세요!":"이렇게 바꿔 보면 어때요? 아래 제안을 참고해 선택을 다시 살펴봐요."}</p>
+${result.rules.map(r=>`<div class="rule">${r.ok?"✔":"💡"} <strong>${esc(r.title)}</strong><br><span class="muted">${esc(r.ok?r.good:r.help)}</span></div>`).join("")}
+<p class="muted">별은 이 미션의 참고 규칙 충족도를 나타내요. 외모나 개인의 가치를 평가하지 않아요. 실제 장소의 안내와 날씨도 함께 확인해요.</p>
+${actions(3,5,"선택 이유 쓰기")}</section></div>`;
+}
+if(state.step===5){
+html+=`<section class="panel"><h2>나의 코디 설명</h2>${missionInfo()}<p><strong>선·색·무늬·재질 중 2가지 이상을 골라, 왜 그렇게 입혔는지 써 보세요.</strong></p>
+<label for="explanation">디자인 선택과 TPO를 연결한 나의 생각</label><textarea id="explanation" maxlength="1200" oninput="updateExplanation(this.value)" placeholder="예: 파란색으로 차분한 느낌을 표현하고, 면 소재로 활동할 때 편하도록 골랐어요.">${esc(state.explanation)}</textarea>
+<p class="muted">예시: “세로선으로 길어 보이는 효과를 표현했고, 면 소재로 움직임을 편하게 했어요.”</p>
+<div id="selfcheck" aria-live="polite">${selfCheckHTML()}</div>
+<p class="muted">자동 체크는 낱말을 찾는 보조 도구예요. 두 요소를 고른 이유가 실제로 담겼는지도 스스로 읽어 보세요.</p>
+<div class="actions"><button onclick="go(4)">← 이전</button><button id="cardNext" class="primary" onclick="go(6)" ${checkWriting().ok?"":"disabled"}>코디 카드 만들기 →</button></div></section>`;
+}
+if(state.step===6){
+const r=evaluate(),m=missions[state.mission];
+html+=`<h2>나의 코디 카드</h2><p>완성한 생각을 한 장에 담았어요. 이름은 별명으로 적어도 좋아요.</p>
+<article class="card"><div class="eyebrow">TPO COORDI STUDIO</div><h3 style="font-size:25px">상황을 생각한 나의 스타일</h3>
+<div class="cardGrid"><div>${svgAvatar("card")}</div><div><span class="pill">${m.icon} ${m.name}</span><p>Time · ${m.time}<br>Place · ${m.place}<br>Occasion · ${m.occasion}</p><strong>TPO 적합도 ${r.stars} / 5</strong><div class="stars" style="font-size:27px">${"★".repeat(r.stars)}${"☆".repeat(5-r.stars)}</div><label for="studentName">이름 또는 별명 (선택)</label><input id="studentName" type="text" maxlength="30" value="${esc(state.name)}" oninput="state.name=this.value" placeholder="나의 이름 / 별명"></div></div>
+<h3>내가 이렇게 입힌 이유</h3><div class="quote">${esc(state.explanation)}</div><p class="muted">선·색·무늬·재질로 개성을 표현하고, TPO로 서로를 배려해요.</p></article>
+<div class="actions"><button onclick="go(5)">← 설명 수정</button><div class="row"><button onclick="go(3)">코디 수정</button><button class="primary" id="saveButton" onclick="savePNG()">이미지로 저장</button><button onclick="restart()">처음부터 다시</button></div></div><div id="status" role="status" aria-live="polite"></div>`;
+}
+$("app").innerHTML=html;
+}
+function setAvatar(key,value){state.avatar[key]=value;render()}
+function chooseMission(i){state.mission=i;render()}
+function drawMission(){
+const n=missions.length;
+state.mission=state.mission===null?Math.floor(Math.random()*n):(state.mission+1+Math.floor(Math.random()*(n-1)))%n;
+render();
+}
+function selectPart(p){state.part=p;render()}
+function controls(){
+const p=state.part,g=state.clothes[p];
+if(p==="bottom"&&isDress()){
+return `<div class="notice" style="margin-top:20px">원피스를 선택해 하의가 대신 가려져 있어요. 상의에서 티셔츠·셔츠·니트·후드티를 고르면 하의를 다시 입을 수 있어요.</div><button style="margin-top:16px" onclick="selectPart('top')">상의 / 원피스 선택으로 이동</button>`;
+}
+let h=field("종류",options(kinds[p],g.kind,(i,x)=>`setCloth('kind','${x}')`));
+if(p==="outer"&&g.kind==="없음")return h+'<p class="muted">재킷이나 가디건을 선택하면 색·무늬·재질을 바꿀 수 있어요.</p>';
+if(p==="top")h+=field("네크라인",options(["라운드넥","V넥","셔츠 칼라"],state.neck,(i,x)=>`setNeck('${x}')`));
+h+=field("색 · 색상 이름은 길게 누르거나 선택해 확인해요",palette(g.color,i=>`setCloth('color',${i})`));
+h+=`<p class="muted">선택한 색: ${colors[g.color][0]} ${g.color===11?"(짙은 회색)":""}</p>`;
+h+=field("무늬",options(patterns,g.pattern,i=>`setCloth('pattern',${i})`));
+if(g.pattern!==0)h+=field("무늬 크기",options(["작은","큰"],g.size,(i,x)=>`setCloth('size','${x}')`));
+h+=field("재질",options(materials,g.material,(i,x)=>`setCloth('material','${x}')`));
+h+='<p class="muted">재질은 색감·질감의 간단한 표현이에요. 실제 옷의 촉감과 기능은 제품에 따라 달라요.</p>';
+return h;
+}
+const patternEffects=[
+"무지는 색과 옷의 형태에 시선이 모이는 효과가 있어요.",
+"세로선 → 길고 날씬해 보이는 시각적 효과가 있어요.",
+"가로선 → 넓고 안정감 있어 보이는 시각적 효과가 있어요.",
+"사선 → 활동적이고 경쾌한 느낌을 줄 수 있어요.",
+"체크 → 선이 교차해 규칙적이고 리듬감 있는 느낌을 줄 수 있어요.",
+"물방울 → 반복되는 둥근 무늬가 경쾌하고 부드러운 느낌을 줄 수 있어요."
+];
+const materialEffects={
+"면":"면 → 광택이 적고 부드럽고 편안한 느낌을 줘요.",
+"마":"마 → 성근 질감이 자연스럽고 시원한 느낌을 줘요.",
+"울 니트":"울 니트 → 두꺼운 짜임은 따뜻한 느낌과 부피감을 만들 수 있어요.",
+"데님":"데님 → 탄탄한 질감이 편안하고 활동적인 느낌을 줘요.",
+"실크":"실크 → 광택과 부드러운 흐름이 화려한 느낌과 부피가 커 보이는 효과를 줄 수 있어요.",
+"기능성 소재":"기능성 소재 → 가벼운 질감이 활동적인 느낌을 줘요. 통기·흡습 기능은 제품마다 달라요.",
+"가죽":"가죽 → 단단한 형태와 광택이 또렷하고 강한 느낌을 줄 수 있어요."
+};
+function setCloth(key,value){
+const g=state.clothes[state.part];g[key]=value;
+if(key==="color"){
+const c=colors[value];
+state.effect=`${c[0]} · `+({warm:"난색 계열 → 따뜻하고 활동적인 느낌, 커 보이는 시각적 효과가 있어요.",cool:"한색 계열 → 차분하고 시원한 느낌을 줄 수 있어요.",neutral:"무채색 → 단정하고 세련된 느낌을 줄 수 있어요."}[c[2]]);
+}else if(key==="pattern")state.effect=patternEffects[value];
+else if(key==="size")state.effect=value==="큰"?"큰 무늬 → 화려하고 커 보이는 시각적 효과가 있어요.":"작은 무늬 → 섬세하고 차분한 느낌을 줄 수 있어요.";
+else if(key==="material")state.effect=materialEffects[value];
+else state.effect=({
+"티셔츠":"티셔츠 → 간결한 형태가 편안하고 가벼운 느낌을 줘요.",
+"셔츠":"셔츠 → 여밈의 세로선과 칼라가 단정한 느낌을 줘요.",
+"니트":"니트 → 짜임이 부드럽고 따뜻한 느낌을 줘요.",
+"후드티":"후드티 → 후드와 넉넉한 형태가 편안하고 활동적인 느낌을 줘요.",
+"원피스":"원피스 → 위아래가 이어진 선과 색으로 통일감을 줄 수 있어요.",
+"긴바지":"긴바지 → 이어지는 세로선이 길어 보이는 효과를 줄 수 있어요.",
+"반바지":"반바지 → 짧게 끊기는 밑단선이 경쾌한 느낌을 줘요.",
+"치마":"치마 → 밑단으로 퍼지는 선이 움직임과 부피감을 만들 수 있어요.",
+"없음":"겉옷 없음 → 상의의 선·색·무늬가 더 잘 드러나요.",
+"재킷":"재킷 → 어깨와 칼라의 각진 선이 또렷하고 단정한 느낌을 줘요.",
+"가디건":"가디건 → 앞여밈의 세로선과 부드러운 형태가 편안한 느낌을 줘요.",
+"운동화":"운동화 → 둥근 선과 도톰한 밑창이 활동적인 느낌을 줘요.",
+"구두":"구두 → 간결하고 또렷한 윤곽이 단정한 느낌을 줘요.",
+"샌들":"샌들 → 열린 부분과 끈의 선이 시원하고 가벼운 느낌을 줘요.",
+"슬리퍼":"슬리퍼 → 열린 형태가 편안하고 가벼운 느낌을 줘요."
+})[value];
+render();
+}
+function setNeck(n){
+state.neck=n;
+state.effect=n==="V넥"?"V넥 → 얼굴과 목이 길어 보이는 시각적 효과가 있어요.":n==="라운드넥"?"라운드넥 → 둥근 선이 부드러운 인상을 줘요.":"셔츠 칼라 → 각진 선과 좌우 대칭이 단정한 느낌을 줘요.";
+render();
+}
+function evaluate(){
+const c=state.clothes,m=state.mission,dress=isDress();
+const clothes=[c.top,...(dress?[]:[c.bottom]),...(c.outer.kind==="없음"?[]:[c.outer])];
+const all=[...clothes,c.shoes];
+const rules=[];
+const add=(ok,title,good,help)=>rules.push({ok:!!ok,title,good,help});
+const dark=g=>[11,12,13].includes(g.color);
+const calm=g=>[10,11,12,13].includes(g.color)||g.color===9;
+const notLarge=g=>g.pattern===0||g.size==="작은";
+if(m===0){
+add(!(c.top.color===10&&(dress||c.bottom.color===10)),"위아래를 모두 흰색으로 입지 않기",
+"흰색으로만 이어지는 차림을 피해 결혼식의 주인공인 신부를 배려했어요.",
+"신부를 배려해 상의나 하의의 색을 바꿔 보면 어때요? 흰 원피스도 다른 색을 생각해 봐요.");
+add(c.top.kind!=="후드티"&&c.shoes.kind!=="슬리퍼","지나치게 편한 차림 피하기",
+"축하의 자리를 함께하는 주인공과 하객을 배려한 선택이에요.",
+"축하받는 사람과 하객을 배려해 후드티는 셔츠·니트 등으로, 슬리퍼는 다른 신발로 바꿔 보면 어때요?");
+}
+if(m===1){
+add(all.every(dark),"어두운 색 사용하기",
+"검정·남색·짙은 회색으로 차분한 분위기를 만들어 유가족을 배려했어요.",
+"유가족이 추모에 집중할 수 있도록 옷과 신발을 검정·남색·짙은 회색으로 바꿔 보면 어때요?");
+add(all.every(g=>g.pattern===0&&dark(g)),"밝은 색과 화려한 무늬 피하기",
+"밝은 색과 무늬를 절제해 추모하는 분들을 배려했어요.",
+"추모하는 분들을 배려해 무늬는 무지로, 밝은 색은 어두운 색으로 바꿔 보면 어때요?");
+add(c.shoes.kind!=="슬리퍼"&&(dress||c.bottom.kind!=="반바지"),"슬리퍼·반바지 피하기",
+"차분한 예절을 갖춰 유가족과 조문객을 배려했어요.",
+"유가족과 조문객을 배려해 슬리퍼나 반바지 대신 단정한 신발과 긴 하의를 생각해 봐요.");
+}
+if(m===2){
+add(c.shoes.kind==="운동화","운동화 선택하기",
+"걷기 편한 신발로 자신의 안전과 함께 걷는 친구들을 배려했어요.",
+"자신과 친구들의 안전을 위해 구두·샌들·슬리퍼 대신 운동화를 골라 보면 어때요?");
+add(!dress&&c.bottom.kind==="긴바지","활동하기 편한 긴바지 선택하기",
+"다리를 보호하는 긴바지로 자신의 안전과 단체 활동을 배려했어요.",
+"긁힘과 이동 불편을 줄이도록 원피스·치마·반바지 대신 긴바지를 골라 보면 어때요?");
+add(clothes.every(g=>["면","데님","기능성 소재"].includes(g.material)),"활동에 편한 소재 선택하기",
+"면·데님·기능성 소재로 자신의 편안함과 원활한 단체 활동을 고려했어요.",
+"자신의 움직임과 함께하는 친구들을 위해 면·데님·기능성 소재를 생각해 봐요. 실크는 야외 활동에 불편할 수 있어요.");
+}
+if(m===3){
+add(["셔츠","니트"].includes(c.top.kind)||c.outer.kind==="재킷","단정한 상의 선택하기",
+"셔츠·니트·재킷으로 발표를 듣는 친구들을 배려했어요.",
+"발표를 듣는 친구들이 공약에 집중하도록 셔츠·니트 또는 재킷을 선택해 보면 어때요?");
+add(clothes.every(g=>calm(g)&&notLarge(g)),"차분한 색과 절제된 무늬 선택하기",
+"차분한 색과 작은 무늬 또는 무지로 청중의 집중을 배려했어요.",
+"청중이 말에 집중하도록 흰색·회색·검정·남색·갈색과 작은 무늬 또는 무지를 생각해 봐요.");
+add(c.shoes.kind!=="슬리퍼","슬리퍼 피하기",
+"발표 자리와 청중을 존중하는 신발을 선택했어요.",
+"발표 자리와 청중을 배려해 슬리퍼 대신 운동화나 구두 등을 골라 보면 어때요?");
+}
+if(m===4){
+add(true,"자유롭게 개성 표현하기",
+"정해진 복장 규칙 없이 나의 생각을 표현했어요. 친구를 축하하는 마음과 디자인 요소 두 가지 이상의 선택 이유를 다음 단계에 꼭 써 주세요.","");
+}
+if(m===5){
+add(clothes.every(g=>["면","마"].includes(g.material)),"통기성 좋은 면·마 선택하기",
+"더위에 지치지 않도록 자신을 돌보고 함께 여행하는 가족을 배려했어요.",
+"자신의 편안함과 가족의 여행을 위해 옷의 소재를 통기성 좋은 면·마로 바꿔 보면 어때요?");
+add(all.every(g=>!["울 니트","가죽"].includes(g.material)),"울 니트·가죽 피하기",
+"덥고 답답할 수 있는 소재를 피해 자신과 가족의 편안한 여행을 고려했어요.",
+"자신의 열감과 피로를 줄여 가족과 편안하게 여행하도록 울 니트·가죽을 다른 소재로 바꿔 보면 어때요?");
+add(["샌들","운동화"].includes(c.shoes.kind),"해변 산책에 맞는 신발 선택하기",
+"샌들 또는 운동화로 발을 보호해 자신과 가족의 안전을 고려했어요.",
+"가족과 해변을 산책할 때는 구두·슬리퍼보다 발을 안정적으로 보호하는 샌들·운동화를 생각해 봐요.");
+}
+const passed=rules.filter(r=>r.ok).length;
+return {rules,stars:m===4?5:Math.round(passed/rules.length*5)};
+}
+function checkWriting(){
+const t=state.explanation.trim();
+const dict={
+"선":["세로","가로","사선","직선","곡선","선이","선을","선으로","선은","네크라인","v넥","브이넥","라운드넥","칼라"],
+"색":["색","빨강","빨간","주황","노랑","노란","연두","초록","하늘","파랑","파란","보라","분홍","갈색","흰","하얀","회색","검정","검은","남색","난색","한색","무채색"],
+"무늬":["무늬","무지","줄무늬","체크","물방울","도트","패턴"],
+"재질":["재질","소재","면","린넨","리넨","마 소재","울","니트","데님","실크","기능성","가죽","광택","두꺼운"]
+};
+const normalized=t.toLowerCase();
+const standaloneLine=/(^|[\s·,])선(?=$|[\s·,])/u.test(normalized);
+const standaloneLinen=/(^|[\s·,])마(?=$|[\s·,])|마(를|로|는|가|의)/u.test(normalized);
+const found=Object.keys(dict).filter(k=>dict[k].some(w=>normalized.includes(w))||(k==="선"&&standaloneLine)||(k==="재질"&&standaloneLinen));
+const length=Array.from(t).length;
+return {found,length,ok:found.length>=2&&length>=30};
+}
+function selfCheckHTML(){
+const c=checkWriting();
+return `<div class="check ${c.found.length>=2?"ok":""}">${c.found.length>=2?"✔":"□"} 서로 다른 디자인 요소 2가지 이상 언급하기 · ${c.found.length}/4 ${c.found.length?"("+c.found.join(" · ")+")":""}</div>
+<div class="check ${c.length>=30?"ok":""}">${c.length>=30?"✔":"□"} 설명 30자 이상 쓰기 · 현재 ${c.length}자</div>`;
+}
+function updateExplanation(v){
+state.explanation=v;$("selfcheck").innerHTML=selfCheckHTML();$("cardNext").disabled=!checkWriting().ok;
+}
+function restart(){
+if(confirm("아바타·코디·설명을 지우고 처음부터 시작할까요? 저장한 PNG 파일은 그대로 남아요.")){
+state=initial();render();window.scrollTo(0,0);
+}
+}
+function wrapCanvas(ctx,text,maxWidth){
+const lines=[];
+for(const para of String(text).split("\n")){
+let line="";
+for(const ch of Array.from(para)){
+if(ctx.measureText(line+ch).width>maxWidth&&line){lines.push(line);line=ch}else line+=ch;
+}
+lines.push(line);
+}
+return lines;
+}
+function rounded(ctx,x,y,w,h,r,color){
+ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();ctx.fillStyle=color;ctx.fill();
+}
+async function savePNG(){
+const btn=$("saveButton"),status=$("status");
+btn.disabled=true;status.textContent="코디 카드를 이미지로 만들고 있어요…";
+let svgURL="";
+try{
+await document.fonts.ready;
+const scale=2,canvas=document.createElement("canvas"),ctx=canvas.getContext("2d");
+if(!ctx)throw new Error("canvas");
+ctx.font='18px "Noto Sans KR",sans-serif';
+const explanationLines=wrapCanvas(ctx,state.explanation,790);
+const m=missions[state.mission],r=evaluate();
+const occasionLines=wrapCanvas(ctx,"Occasion · "+m.occasion,450);
+const nameLines=wrapCanvas(ctx,"이름 / 별명 · "+(state.name.trim()||"나의 코디"),450);
+const summaryBottom=Math.max(475,300+occasionLines.length*27+nameLines.length*26+90);
+const explanationTop=Math.max(635,summaryBottom+55);
+const height=explanationTop+explanationLines.length*29+140;
+canvas.width=900*scale;canvas.height=height*scale;ctx.scale(scale,scale);
+ctx.fillStyle="#f0ebf6";ctx.fillRect(0,0,900,height);
+rounded(ctx,30,30,840,height-60,26,"#ffffff");
+ctx.fillStyle="#7160bd";ctx.font='700 15px "Noto Sans KR",sans-serif';ctx.fillText("TPO COORDI STUDIO",65,83);
+ctx.fillStyle="#30334b";ctx.font='800 31px "Noto Sans KR",sans-serif';ctx.fillText("상황을 생각한 나의 스타일",65,132);
+rounded(ctx,60,165,300,450,22,"#f3f0f7");
+const blob=new Blob([svgAvatar("export")],{type:"image/svg+xml;charset=utf-8"});
+svgURL=URL.createObjectURL(blob);
+const img=new Image();
+await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=reject;img.src=svgURL});
+ctx.drawImage(img,68,169,280,448);
+ctx.fillStyle="#30334b";ctx.font='700 22px "Noto Sans KR",sans-serif';
+const missionLines=wrapCanvas(ctx,m.name,450);
+missionLines.forEach((line,i)=>ctx.fillText(line,390,211+i*30));
+ctx.font='17px "Noto Sans KR",sans-serif';
+ctx.fillText("Time · "+m.time,390,260);
+ctx.fillText("Place · "+m.place,390,289);
+let y=320;
+occasionLines.forEach(line=>{ctx.fillText(line,390,y);y+=27});
+y+=24;ctx.font='700 19px "Noto Sans KR",sans-serif';
+ctx.fillText("TPO 적합도 "+r.stars+" / 5",390,y);y+=40;
+ctx.fillStyle="#a87719";ctx.font='30px sans-serif';ctx.fillText("★".repeat(r.stars)+"☆".repeat(5-r.stars),390,y);y+=48;
+ctx.fillStyle="#30334b";ctx.font='17px "Noto Sans KR",sans-serif';
+nameLines.forEach(line=>{ctx.fillText(line,390,y);y+=26});
+ctx.font='700 21px "Noto Sans KR",sans-serif';ctx.fillText("내가 이렇게 입힌 이유",65,explanationTop);
+rounded(ctx,55,explanationTop+18,790,explanationLines.length*29+35,16,"#f6f2f8");
+ctx.font='18px "Noto Sans KR",sans-serif';ctx.fillStyle="#30334b";
+explanationLines.forEach((line,i)=>ctx.fillText(line,75,explanationTop+50+i*29));
+ctx.fillStyle="#687087";ctx.font='13px "Noto Sans KR",sans-serif';
+ctx.fillText("선·색·무늬·재질로 개성을 표현하고, TPO로 서로를 배려해요.",65,height-62);
+const png=await new Promise(resolve=>canvas.toBlob(resolve,"image/png"));
+if(!png)throw new Error("PNG");
+const url=URL.createObjectURL(png),link=document.createElement("a");
+link.href=url;link.download="TPO_나의_코디_카드.png";document.body.append(link);link.click();link.remove();
+setTimeout(()=>URL.revokeObjectURL(url),60000);
+status.textContent="PNG 저장을 요청했어요. 기기의 다운로드 목록을 확인해 주세요.";
+}catch(error){
+status.textContent="이미지 저장을 마치지 못했어요. Chrome에서 파일을 열고 다시 시도해 주세요.";
+}finally{
+if(svgURL)URL.revokeObjectURL(svgURL);
+btn.disabled=false;
+}
+}
+render();
+</script>
+</body>
+</html>
